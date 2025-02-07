@@ -4,7 +4,7 @@ async function aiRequest(botId, req, res) {
         res.setHeader('Content-Type', 'text/plain; charset=utf-8');
         res.setHeader('Transfer-Encoding', 'chunked');
         const openai = new OpenAI({
-            apiKey: '9c88e941-7e3e-4c17-932d-7329aaae546f',
+            apiKey: process.env.API_KEY,
             baseURL: 'https://ark.cn-beijing.volces.com/api/v3',
         });
         const stream = await openai.chat.completions.create({
