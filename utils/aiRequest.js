@@ -1,3 +1,4 @@
+require('dotenv').config();
 async function aiRequest(botId, req, res) {
     try {
         const OpenAI = require('openai');
