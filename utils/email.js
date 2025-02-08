@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 require('dotenv').config();
-async function sendEmail(receiver, content) {
+async function sendEmail(receiver, content, type, url) {
     try {
         const transporter = nodemailer.createTransport({
             service: 'qq',
@@ -9,14 +9,26 @@ async function sendEmail(receiver, content) {
                 pass: process.env.EMAIL_PASSWORD
             }
         });
-
-        // 邮件选项
-        const mailOptions = {
-            from: process.env.EMAIL,
-            to: receiver,
-            subject: '托米AI',
-            text: content
-        };
+        let mailOptions
+        if (type && url) {
+            mailOptions = {
+                from: process.env.EMAIL,
+                to: receiver,
+                subject: '托米AI',
+                text: content,
+                attachments: [{
+                    filename: type,
+                    path: url,
+                }]
+            };
+        } else {
+            mailOptions = {
+                from: process.env.EMAIL,
+                to: receiver,
+                subject: '托米AI',
+                text: content
+            };
+        }
 
         // 发送邮件
         const info = await transporter.sendMail(mailOptions);
@@ -27,6 +39,5 @@ async function sendEmail(receiver, content) {
         throw error;
     }
 }
-console.log(process.env.EMAIL_PASSWORD, 123)
-sendEmail('1059154378@qq.com', '123213123')
-exports.sendEmail = sendEmail;
+
+module.exports = sendEmail;
